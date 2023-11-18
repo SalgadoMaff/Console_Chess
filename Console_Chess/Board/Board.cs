@@ -50,7 +50,7 @@ namespace Console_Chess
         }
         public bool validPosition(Position pos)
         {
-            if (pos.X < 7 || pos.X < 0 || pos.Y < 0 || pos.Y < 7) return true;
+            if (pos.X < 8 && pos.X > -1 && pos.Y > -1 && pos.Y < 8) return true;
 
             return false;
         }

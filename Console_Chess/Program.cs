@@ -8,12 +8,12 @@ try
     PosDict posdict = new PosDict();
     Match Chess_match = new Match(Color.WHITE,board);
     board.putPiece(new Rook(Color.BLACK, board), posdict.toPosition('D', 1));
-    board.putPiece(new Rook(Color.BLACK, board), posdict.toPosition('E', 1));
+    board.putPiece(new King(Color.BLACK, board), posdict.toPosition('E', 1));
     board.putPiece(new Rook(Color.BLACK, board), posdict.toPosition('D', 2));
     board.putPiece(new Rook(Color.BLACK, board), posdict.toPosition('E', 2));
     board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('E', 8));
     board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('E', 7));
-    board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('D', 8));
+    board.putPiece(new King(Color.WHITE, board), posdict.toPosition('D', 8));
     board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('D', 7));
     while (!Chess_match.finished)
     {
@@ -21,6 +21,10 @@ try
         View.printBoard(board, posdict);
         Console.WriteLine("Origin:");
         Position origin = View.readChessPosition(posdict);
+        Console.Clear();
+
+        bool[,] possiblePositions = Chess_match.board.getPiece(origin).possibleMovements();
+        View.printBoard(board, posdict, possiblePositions);
         Console.WriteLine("Target:");
         Position target = View.readChessPosition(posdict);
         Chess_match.movePiece(origin, target);
