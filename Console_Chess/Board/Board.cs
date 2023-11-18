@@ -45,7 +45,7 @@ namespace Console_Chess
 
         public bool pieceExists(Position pos)
         {
-            Positionvalidation(pos);
+            PositionValidation(pos);
             return getPiece(pos) != null;
         }
         public bool validPosition(Position pos)
@@ -55,7 +55,7 @@ namespace Console_Chess
             return false;
         }
 
-        public void Positionvalidation(Position pos)
+        public void PositionValidation(Position pos)
         {
             if (!validPosition(pos)) throw new BoardException("Invalid Position");
         }

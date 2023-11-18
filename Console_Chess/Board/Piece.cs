@@ -20,5 +20,10 @@ namespace Console_Chess
             Board = board;
             QttMovement = 0;
         }
+
+        public void incMovement()
+        {
+            QttMovement++;
+        }
     }
 }

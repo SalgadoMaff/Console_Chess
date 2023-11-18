@@ -36,6 +36,7 @@ namespace Console_Chess
             {
                 Console.Write(dict.ColumnDict[i].ToString() + ' ');
             }
+            Console.WriteLine();
         }
         public static void printPiece(Piece piece)
         {
@@ -79,6 +80,15 @@ namespace Console_Chess
                 default:
                     break;
             }
+        }
+        public static Position readChessPosition(PosDict posdict)
+        {
+            Console.Write("Enter a Position (EX = A1): ");
+            string s = Console.ReadLine().ToUpper();
+            char ch = s[0];
+            int i = int.Parse(s[1].ToString());
+            return posdict.toPosition(ch,i);
+
         }
     }
 }
