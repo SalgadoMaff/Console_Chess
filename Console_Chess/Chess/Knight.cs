@@ -12,6 +12,16 @@ namespace Console_Chess
         {
         }
 
+        public override bool canMove(Position pos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool[,] possibleMovements()
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return "KNIGHT";

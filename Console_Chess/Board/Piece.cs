@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Chess
 {
-    internal class Piece
+    abstract class Piece
     {
         public Position Position { get; set; }
         public Color Color { get; protected set; }
@@ -25,5 +25,10 @@ namespace Console_Chess
         {
             QttMovement++;
         }
+
+        public abstract bool[,] possibleMovements();
+        public abstract bool canMove(Position pos);
+
+
     }
 }
