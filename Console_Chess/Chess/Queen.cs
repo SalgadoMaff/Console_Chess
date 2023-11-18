@@ -14,12 +14,124 @@ namespace Console_Chess
 
         public override bool canMove(Position pos)
         {
-            throw new NotImplementedException();
+            Piece p = Board.getPiece(pos);
+            if (p == null)
+            {
+                return true;
+            }
+            else
+            {
+                if (p.Color != this.Color)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override bool[,] possibleMovements()
         {
-            throw new NotImplementedException();
+            bool[,] mat = new bool[this.Board.X, this.Board.Y];
+            //up
+            Position pos = new Position(this.Position.X - 1, this.Position.Y);
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X -= 1;
+            }
+            //up right
+            pos.X = this.Position.X - 1;
+            pos.Y = this.Position.Y + 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X -= 1;
+                pos.Y += 1;
+            }
+            //right
+            pos.X = this.Position.X;
+            pos.Y = this.Position.Y + 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.Y += 1;
+            }
+            //down right
+            pos.X = this.Position.X + 1;
+            pos.Y = this.Position.Y + 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X += 1;
+                pos.Y += 1;
+            }
+            //down
+            pos.X = this.Position.X + 1;
+            pos.Y = this.Position.Y;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X += 1;
+            }
+            //down left
+            pos.X = this.Position.X + 1;
+            pos.Y = this.Position.Y - 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X += 1;
+                pos.Y -= 1;
+            }
+            //left
+            pos.X = this.Position.X;
+            pos.Y = this.Position.Y - 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.Y -= 1;
+            }
+            //up left
+            pos.X = this.Position.X - 1;
+            pos.Y = this.Position.Y - 1;
+            while (Board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.X, pos.Y] = true;
+                if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+                {
+                    break;
+                }
+                pos.X -= 1;
+                pos.Y -= 1;
+            }
+            return mat;
         }
 
         public override string ToString()
