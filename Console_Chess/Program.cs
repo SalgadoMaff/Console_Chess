@@ -10,31 +10,44 @@ try
     Match Chess_match = new Match(Color.WHITE, board);
     while (!Chess_match.finished)
     {
-        Console.Clear();
-        View.printBoard(board, posdict);
+        try
+        {
+            Console.Clear();
+            View.printBoard(board, posdict);
             Console.WriteLine();
             Console.WriteLine("Turn: " + Chess_match.getTurn());
             Console.WriteLine(Chess_match.getPlayer() + "'s turn");
             Console.WriteLine();
-        Console.WriteLine("Origin:");
-        Position origin = View.readChessPosition(posdict);
-        Console.Clear();
+            Console.WriteLine("Origin:");
+            Position origin = View.readChessPosition(posdict);
+            Chess_match.validatePositionOrigin(origin);
+            Console.Clear();
 
-        bool[,] possiblePositions = Chess_match.board.getPiece(origin).possibleMovements();
-        View.printBoard(board, posdict, possiblePositions);
+            bool[,] possiblePositions = Chess_match.board.getPiece(origin).possibleMovements();
+            View.printBoard(board, posdict, possiblePositions);
             Console.WriteLine();
             
-        Console.WriteLine("Target:");
-        Position target = View.readChessPosition(posdict);
-        Chess_match.movePiece(origin, target);
+            Console.WriteLine("Target:");
+            Position target = View.readChessPosition(posdict);
+            Chess_match.validatePositionTarget(origin, target);
+            Chess_match.doMove(origin, target);
+        }
+        catch (BoardException e)
+        {
+
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+        }
+
 
     }
 
-   }
+}
 catch (BoardException e)
 {
 
     Console.WriteLine(e.Message);
+    Console.ReadLine();
 }
 
 Board populateBoard(PosDict posdict)

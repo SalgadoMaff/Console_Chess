@@ -36,6 +36,27 @@ namespace Console_Chess
             _turn++;
             changePlayer();
         }
+
+        public void validatePositionTarget(Position origin, Position target)
+        {
+            if (!board.getPiece(origin).canMove(target)) {
+                throw new BoardException("Invalid position!");
+            }
+        }
+        public void validatePositionOrigin(Position origin)
+        {
+            if (board.getPiece(origin)==null) {
+                throw new BoardException("There isn't a piece in this position!");
+            }
+            if (board.getPiece(origin).Color != _currentPlayer)
+            {
+                throw new BoardException($"It's not {board.getPiece(origin).Color}'s turn!");
+            }
+            if (!board.getPiece(origin).isTherePossibleMovements())
+            {
+                throw new BoardException("Piece's movement is blocked!");
+            }
+        }
         private void changePlayer()
         {
             if (_currentPlayer == Color.WHITE)
