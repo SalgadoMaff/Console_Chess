@@ -34,65 +34,166 @@ namespace Console_Chess
             bool[,] mat = new bool[this.Board.X, this.Board.Y];
             //up right
             Position pos = new Position(this.Position.X - 2, this.Position.Y + 1);
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
             //up left
             pos.X = this.Position.X - 2;
             pos.Y = this.Position.Y - 1;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
             //left up
             pos.X = this.Position.X - 1;
             pos.Y = this.Position.Y - 2;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
             //left down
             pos.X = this.Position.X + 1;
             pos.Y = this.Position.Y - 2;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
             //right up
             pos.X = this.Position.X - 1;
             pos.Y = this.Position.Y + 2;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
 
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
             }
             //right down
             pos.X = this.Position.X + 1;
             pos.Y = this.Position.Y + 2;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
 
             }
             //down right
             pos.X = this.Position.X + 2;
             pos.Y = this.Position.Y + 1;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
             //down left
             pos.X = this.Position.X + 2;
             pos.Y = this.Position.Y - 1;
-            if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
+            if (this.Board.validPosition(pos))
             {
-                mat[pos.X, pos.Y] = true;
+
+                if (this.Board.getPiece(pos) != null)
+                {
+                    if (this.Board.getPiece(pos).Color != this.Color)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+                else
+                {
+                    mat[pos.X, pos.Y] = true;
+                }
+
 
             }
 
