@@ -12,12 +12,18 @@ try
     {
         Console.Clear();
         View.printBoard(board, posdict);
+            Console.WriteLine();
+            Console.WriteLine("Turn: " + Chess_match.getTurn());
+            Console.WriteLine(Chess_match.getPlayer() + "'s turn");
+            Console.WriteLine();
         Console.WriteLine("Origin:");
         Position origin = View.readChessPosition(posdict);
         Console.Clear();
 
         bool[,] possiblePositions = Chess_match.board.getPiece(origin).possibleMovements();
         View.printBoard(board, posdict, possiblePositions);
+            Console.WriteLine();
+            
         Console.WriteLine("Target:");
         Position target = View.readChessPosition(posdict);
         Chess_match.movePiece(origin, target);

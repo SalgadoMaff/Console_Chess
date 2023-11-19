@@ -11,9 +11,9 @@ namespace Console_Chess
         public Board board { get; private set; }
         private int _turn;
         private Color _currentPlayer;
-        public bool finished {  get; private set; }
+        public bool finished { get; private set; }
 
-        public Match(Color currentPlayer,Board board)
+        public Match(Color currentPlayer, Board board)
         {
             this.board = board;
             _turn = 1;
@@ -28,6 +28,33 @@ namespace Console_Chess
             Piece captured = board.removePiece(target);
             board.putPiece(p, target);
 
+        }
+
+        internal void doMove(Position origin, Position target)
+        {
+            movePiece(origin, target);
+            _turn++;
+            changePlayer();
+        }
+        private void changePlayer()
+        {
+            if (_currentPlayer == Color.WHITE)
+            {
+                _currentPlayer = Color.BLACK;
+            }
+            else
+            {
+                _currentPlayer = Color.WHITE;
+            }
+        }
+        public int getTurn() { return this._turn; }
+        public string getPlayer()
+        {
+            if (_currentPlayer == Color.BLACK)
+            {
+                return "Black";
+            }
+            return "White";
         }
 
     }
