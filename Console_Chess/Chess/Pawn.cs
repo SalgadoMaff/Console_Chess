@@ -14,14 +14,114 @@ namespace Console_Chess
 
         public override bool canMove(Position pos)
         {
-            throw new NotImplementedException();
+            Piece p = Board.getPiece(pos);
+            if (p == null)
+            {
+                return true;
+            }
+            else
+            {
+                if (p.Color != this.Color)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override bool[,] possibleMovements()
         {
-            throw new NotImplementedException();
-        }
+            bool[,] mat = new bool[this.Board.X, this.Board.Y];
+            Position pos = new Position();
+            pos.Y = this.Position.Y;
+            if (this.Color == Color.BLACK)
+            {
+                if (this.QttMovement == 0)
+                {
+                    for (int i = 1; i < 3; i++)
+                    {
+                        pos.X = this.Position.X - i;
+                        if (Board.validPosition(pos) && canMove(pos) && this.Board.getPiece(pos) == null)
+                        {
+                            mat[pos.X, pos.Y] = true;
+                        }
+                    }
 
+
+                }
+                else
+                {
+                    //pawnNormalMove
+                    pos.X = this.Position.X - 1;
+                    if (Board.validPosition(pos) && canMove(pos) && this.Board.getPiece(pos) == null)
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                    //pawnAttack
+                    pos.Y = this.Position.Y + 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+                    pos.Y = this.Position.Y - 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                }
+            }
+            else
+            {
+                if (this.QttMovement == 0)
+                {
+                    for (int i = 1; i < 3; i++)
+                    {
+                        pos.X = Position.X + i;
+                        if (Board.validPosition(pos) && canMove(pos))
+                        {
+                            mat[pos.X, pos.Y] = true;
+                        }
+                    }
+
+                }
+                else
+                {
+                    //pawnNormalMove
+                    pos.X = this.Position.X + 1;
+                    if (Board.validPosition(pos) && canMove(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+
+                    //pawnAttack
+                    pos.Y = this.Position.Y + 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+                    pos.Y = this.Position.Y - 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+                }
+            }
+            return mat;
+        }
+        public bool canPawnAttack(Position pos)
+        {
+            if (Board.getPiece(pos) != null)
+            {
+                if (Board.getPiece(pos).Color != this.Color)
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
         public override string ToString()
         {
             return "PAWN";
