@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -23,21 +24,90 @@ namespace Console_Chess
             finished = false;
         }
 
-        public void movePiece(Position origin, Position target)
+        public Piece movePiece(Position origin, Position target)
         {
             Piece p = board.removePiece(origin);
             p.incMovement();
             Piece captured = board.removePiece(target);
             board.putPiece(p, target);
-            if (captured != null) { this.captured.Add(captured); }
+            if (captured != null)
+            {
+                this.captured.Add(captured);
+                if (this.captured.ToString() == "KING")
+                {
+                    this.finished = true;
+                }
+            }
+            return captured;
 
         }
 
+        private Piece king(Color color)
+        {
+            foreach (Piece x in inGamePieces(color))
+            {
+                if (x is King)
+                {
+                    return x;
+                }
+            }
+            return null;
+        }
+
+        public bool isInCheck(Color color)
+        {
+            Piece k = king(color);
+            if (k is not null)
+            {
+                foreach (Piece x in inGamePieces(oponentColor(color)))
+                {
+                    bool[,] mat = x.possibleMovements();
+                    if (mat[k.Position.X, k.Position.Y])
+                    {
+                        return true;
+                    }
+                    
+                }
+                return false;
+            }
+            else
+            {
+                throw new BoardException("No king in game");
+            }
+        }
+
+        private Color oponentColor(Color color)
+        {
+            if (color == Color.BLACK)
+            {
+                return Color.WHITE;
+            }
+            return Color.BLACK;
+
+        }
         internal void doMove(Position origin, Position target)
         {
-            movePiece(origin, target);
+            Piece captured=movePiece(origin, target);
+            if (isInCheck(_currentPlayer))
+            {
+                undoMove(origin, target, captured);
+                throw new BoardException("You can't put yourself in check");
+            }
             _turn++;
             changePlayer();
+
+        }
+
+        private void undoMove(Position origin, Position target, Piece captured)
+        {
+            Piece p = board.removePiece(target);
+            p.decreaseMovement();
+            board.putPiece(p, origin);
+            if (captured is not null)
+            {
+                this.captured.Remove(captured);
+                board.putPiece(captured, target);
+            }
         }
 
         public void printMatch(Board board, PosDict posdict)
@@ -50,6 +120,10 @@ namespace Console_Chess
             Console.WriteLine("Turn: " + this.getTurn());
             Console.WriteLine(this.getPlayer() + "'s turn");
             Console.WriteLine();
+            if (this.isInCheck(this._currentPlayer))
+            {
+                Console.WriteLine("CHECK");
+            }
         }
 
         private void printCaptured()
@@ -57,13 +131,13 @@ namespace Console_Chess
             Console.Write("White pieces captured: ");
             foreach (Piece piece in this.capturedPieces(Color.WHITE))
             {
-                Console.Write(piece.ToString()+' ');
+                Console.Write(piece.ToString() + ' ');
             }
             Console.WriteLine();
             Console.Write("Black pieces captured: ");
             foreach (Piece piece in this.capturedPieces(Color.BLACK))
             {
-                Console.Write(piece.ToString()+' ');
+                Console.Write(piece.ToString() + ' ');
             }
             Console.WriteLine();
         }

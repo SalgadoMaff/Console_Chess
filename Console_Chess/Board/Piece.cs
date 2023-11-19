@@ -25,6 +25,11 @@ namespace Console_Chess
         {
             QttMovement++;
         }
+        public void decreaseMovement()
+        {
+            QttMovement--;
+        }
+
         public bool isTherePossibleMovements()
         {
             bool[,] mat = possibleMovements();
