@@ -12,29 +12,14 @@ namespace Console_Chess
         {
         }
 
-        public override bool canMove(Position pos)
-        {
-            Piece p = Board.getPiece(pos);
-            if(p == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (p.Color != this.Color)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
 
         public override bool[,] possibleMovements()
         {
             bool[,] mat = new bool[this.Board.X, this.Board.Y];
             //up
             Position pos = new Position(Position.X - 1, Position.Y);
-            while (Board.validPosition(pos) && canMove(pos))
+            while (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
                 if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
@@ -46,7 +31,7 @@ namespace Console_Chess
             //down
             pos.X = Position.X + 1;
             pos.Y = Position.Y;
-            while (Board.validPosition(pos) && canMove(pos))
+            while (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
                 if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
@@ -59,7 +44,7 @@ namespace Console_Chess
             //left
             pos.X = Position.X;
             pos.Y = Position.Y - 1;
-            while (Board.validPosition(pos) && canMove(pos))
+            while (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
                 if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)
@@ -71,7 +56,7 @@ namespace Console_Chess
             //right
             pos.X = Position.X;
             pos.Y = Position.Y + 1;
-            while (Board.validPosition(pos) && canMove(pos))
+            while (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
                 if (this.Board.getPiece(pos) != null && this.Board.getPiece(pos).Color != this.Color)

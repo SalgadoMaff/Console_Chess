@@ -12,22 +12,7 @@ namespace Console_Chess
         {
         }
 
-        public override bool canMove(Position pos)
-        {
-            Piece p = Board.getPiece(pos);
-            if (p == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (p.Color != this.Color)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
 
         public override bool[,] possibleMovements()
         {

@@ -13,78 +13,63 @@ namespace Console_Chess
 
         }
 
-        public override bool canMove(Position pos)
-        {
-            Piece p = Board.getPiece(pos);
-            if (p == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (p.Color != this.Color)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
 
         public override bool[,] possibleMovements()
         {
             bool[,] mat = new bool[this.Board.X, this.Board.Y];
             //up
             Position pos = new Position(this.Position.X - 1, this.Position.Y);
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //up right
             pos.X = this.Position.X - 1;
             pos.Y = this.Position.Y + 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //right
             pos.X = this.Position.X;
             pos.Y=this.Position.Y + 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //down right
             pos.X = this.Position.X + 1;
             pos.Y= this.Position.Y + 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //down
             pos.X = this.Position.X + 1;
             pos.Y=this.Position.Y;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //down left
             pos.X = this.Position.X + 1;
             pos.Y=this.Position.Y - 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //left
             pos.X = this.Position.X;
             pos.Y = this.Position.Y - 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }
             //up left
             pos.X = this.Position.X - 1;
             pos.Y = this.Position.Y - 1;
-            if (Board.validPosition(pos) && canMove(pos))
+            if (Board.validPosition(pos) && canMoveTo(pos))
             {
                 mat[pos.X, pos.Y] = true;
             }

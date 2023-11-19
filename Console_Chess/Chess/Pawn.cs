@@ -12,22 +12,7 @@ namespace Console_Chess
         {
         }
 
-        public override bool canMove(Position pos)
-        {
-            Piece p = Board.getPiece(pos);
-            if (p == null)
-            {
-                return true;
-            }
-            else
-            {
-                if (p.Color != this.Color)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
 
         public override bool[,] possibleMovements()
         {
@@ -41,10 +26,22 @@ namespace Console_Chess
                     for (int i = 1; i < 3; i++)
                     {
                         pos.X = this.Position.X - i;
-                        if (Board.validPosition(pos) && canMove(pos) && this.Board.getPiece(pos) == null)
+                        if (Board.validPosition(pos) && canMoveTo(pos) && this.Board.getPiece(pos) == null)
                         {
                             mat[pos.X, pos.Y] = true;
                         }
+                    }
+                    //pawnAttack
+                    pos.X = this.Position.X - 1;
+                    pos.Y = this.Position.Y + 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+                    pos.Y = this.Position.Y - 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
                     }
 
 
@@ -53,7 +50,7 @@ namespace Console_Chess
                 {
                     //pawnNormalMove
                     pos.X = this.Position.X - 1;
-                    if (Board.validPosition(pos) && canMove(pos) && this.Board.getPiece(pos) == null)
+                    if (Board.validPosition(pos) && canMoveTo(pos) && this.Board.getPiece(pos) == null)
                     {
                         mat[pos.X, pos.Y] = true;
                     }
@@ -79,10 +76,22 @@ namespace Console_Chess
                     for (int i = 1; i < 3; i++)
                     {
                         pos.X = Position.X + i;
-                        if (Board.validPosition(pos) && canMove(pos))
+                        if (Board.validPosition(pos) && canMoveTo(pos))
                         {
                             mat[pos.X, pos.Y] = true;
                         }
+                    }
+                    //pawnAttack
+                    pos.X = this.Position.X + 1;
+                    pos.Y = this.Position.Y + 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
+                    }
+                    pos.Y = this.Position.Y - 1;
+                    if (Board.validPosition(pos) && this.canPawnAttack(pos))
+                    {
+                        mat[pos.X, pos.Y] = true;
                     }
 
                 }
@@ -90,7 +99,7 @@ namespace Console_Chess
                 {
                     //pawnNormalMove
                     pos.X = this.Position.X + 1;
-                    if (Board.validPosition(pos) && canMove(pos))
+                    if (Board.validPosition(pos) && canMoveTo(pos))
                     {
                         mat[pos.X, pos.Y] = true;
                     }
