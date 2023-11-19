@@ -8,16 +8,13 @@ try
     PosDict posdict = new PosDict();
     Board board = populateBoard(posdict);
     Match Chess_match = new Match(Color.WHITE, board);
+    Chess_match.populateHash(board);
     while (!Chess_match.finished)
     {
         try
         {
-            Console.Clear();
-            View.printBoard(board, posdict);
-            Console.WriteLine();
-            Console.WriteLine("Turn: " + Chess_match.getTurn());
-            Console.WriteLine(Chess_match.getPlayer() + "'s turn");
-            Console.WriteLine();
+            Chess_match.printMatch(board,posdict);
+            
             Console.WriteLine("Origin:");
             Position origin = View.readChessPosition(posdict);
             Chess_match.validatePositionOrigin(origin);
@@ -35,6 +32,11 @@ try
         catch (BoardException e)
         {
 
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+        }
+        catch(Exception e)
+        {
             Console.WriteLine(e.Message);
             Console.ReadLine();
         }
@@ -84,8 +86,8 @@ Board populateBoard(PosDict posdict)
     board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('A', 8));
     board.putPiece(new Knight(Color.WHITE, board), posdict.toPosition('B', 8));
     board.putPiece(new Bishop(Color.WHITE, board), posdict.toPosition('C', 8));
-    board.putPiece(new Queen(Color.WHITE, board), posdict.toPosition('D', 8));
-    board.putPiece(new King(Color.WHITE, board), posdict.toPosition('E', 8));
+    board.putPiece(new King(Color.WHITE, board), posdict.toPosition('D', 8));
+    board.putPiece(new Queen(Color.WHITE, board), posdict.toPosition('E', 8));
     board.putPiece(new Bishop(Color.WHITE, board), posdict.toPosition('F', 8));
     board.putPiece(new Knight(Color.WHITE, board), posdict.toPosition('G', 8));
     board.putPiece(new Rook(Color.WHITE, board), posdict.toPosition('H', 8));
