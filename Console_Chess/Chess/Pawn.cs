@@ -76,7 +76,7 @@ namespace Console_Chess
                     for (int i = 1; i < 3; i++)
                     {
                         pos.X = Position.X + i;
-                        if (Board.validPosition(pos) && canMoveTo(pos))
+                        if (Board.validPosition(pos) && canMoveTo(pos) && this.Board.getPiece(pos) == null)
                         {
                             mat[pos.X, pos.Y] = true;
                         }
@@ -99,7 +99,7 @@ namespace Console_Chess
                 {
                     //pawnNormalMove
                     pos.X = this.Position.X + 1;
-                    if (Board.validPosition(pos) && canMoveTo(pos))
+                    if (Board.validPosition(pos) && canMoveTo(pos) && this.Board.getPiece(pos) == null)
                     {
                         mat[pos.X, pos.Y] = true;
                     }
