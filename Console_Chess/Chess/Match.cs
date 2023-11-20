@@ -46,7 +46,7 @@ namespace Console_Chess
         }
 
         private void undoMove(Position origin, Position target, Piece captured)
-                {
+        {
             Piece p = board.removePiece(target);
             p.decreaseMovement();
             if (captured is not null)
@@ -54,10 +54,9 @@ namespace Console_Chess
                 board.putPiece(captured, target);
                 this.capturedInGame.Remove(captured);
 
-                }
-            board.putPiece(p, origin);
             }
-            return captured;
+            board.putPiece(p, origin);
+        }
 
         internal void makePlay(Position origin, Position target)
         {
@@ -68,7 +67,7 @@ namespace Console_Chess
                 if (isCheckMate(_currentPlayer))
                 {
                     finished = true;
-        }
+                }
                 else {
                     undoMove(origin, target, captured);
                     throw new BoardException("You can't put yourself in check");
@@ -142,50 +141,60 @@ namespace Console_Chess
                     {
                         return true;
                     }
-                    
+
                 }
                 return false;
             }
             else
             {
-                throw new BoardException("No king in game");
+                return true ;
             }
         }
+        public bool isCheckMate(Color color)
+        {
+            if (!isInCheck(color)) return false;
+            var k = king(color);
+            bool[,] escape = k.possibleMovements();
+            foreach (Piece x in inGamePieces(oponentColor(color)))
+            {
+                bool[,] attack = x.possibleMovements();
+                for (int i = 0; i < 8; i++)
+                {
+                    for (int j = 0; j < 8; j++)
+                    {
+                        if (attack[i, j] && escape[i, j])
+                        {
+                            escape[i, j] = false;
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (escape[i, j])
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
 
         private Color oponentColor(Color color)
         {
             if (color == Color.BLACK)
-            foreach (Piece x in inGamePieces(oponentColor(color)))
             {
                 return Color.WHITE;
             }
             return Color.BLACK;
 
         }
-        internal void doMove(Position origin, Position target)
-        {
-            Piece captured=movePiece(origin, target);
-            if (isInCheck(_currentPlayer))
-            {
-                undoMove(origin, target, captured);
-                throw new BoardException("You can't put yourself in check");
-            }
-            _turn++;
-            changePlayer();
 
-        }
 
-        private void undoMove(Position origin, Position target, Piece captured)
-        {
-            Piece p = board.removePiece(target);
-            p.decreaseMovement();
-            board.putPiece(p, origin);
-            if (captured is not null)
-            {
-                this.captured.Remove(captured);
-                board.putPiece(captured, target);
-            }
-        }
+
 
         public void printMatch(Board board, PosDict posdict)
         {
@@ -194,13 +203,26 @@ namespace Console_Chess
             Console.WriteLine();
             this.printCaptured();
             Console.WriteLine();
-            Console.WriteLine("Turn: " + this.getTurn());
-            Console.WriteLine(this.getPlayer() + "'s turn");
-            Console.WriteLine();
-            if (this.isInCheck(this._currentPlayer))
+            if (!finished)
             {
-                Console.WriteLine("CHECK");
+                Console.WriteLine("Turn: " + this.getTurn());
+                Console.WriteLine(this.getPlayer() + "'s turn");
+                Console.WriteLine();
+                if (this.isInCheck(this._currentPlayer))
+                {
+                    Console.WriteLine("CHECK");
+                    Console.WriteLine("You can only move your King!");
+                    Console.WriteLine();
+                }
             }
+            else
+            {
+                Console.WriteLine("CHECKMATE!\n");
+                Console.WriteLine(this._currentPlayer.ToString() + "'s win");
+                Console.WriteLine("Press Enter to exit");
+                Console.ReadLine();
+            }
+
         }
 
         private void printCaptured()
