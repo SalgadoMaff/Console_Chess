@@ -14,32 +14,108 @@ namespace Console_Chess
         private int _turn;
         private Color _currentPlayer;
         public bool finished { get; private set; }
-        private HashSet<Piece> pieces = new HashSet<Piece>();
-        private HashSet<Piece> captured = new HashSet<Piece>();
+
+        private HashSet<Piece> piecesInGame;
+
+        private HashSet<Piece> capturedInGame;
+        public bool Check { get; private set; }
         public Match(Color currentPlayer, Board board)
         {
             this.board = board;
             _turn = 1;
             _currentPlayer = currentPlayer;
             finished = false;
+            piecesInGame = new HashSet<Piece>();
+            capturedInGame = new HashSet<Piece>();
         }
 
-        public Piece movePiece(Position origin, Position target)
+        public Piece executeMove(Position origin, Position target)
         {
+
             Piece p = board.removePiece(origin);
             p.incMovement();
             Piece captured = board.removePiece(target);
             board.putPiece(p, target);
             if (captured != null)
             {
-                this.captured.Add(captured);
-                if (this.captured.ToString() == "KING")
-                {
-                    this.finished = true;
-                }
+                this.capturedInGame.Add(captured);
+
             }
             return captured;
 
+        }
+
+        private void undoMove(Position origin, Position target, Piece captured)
+                {
+            Piece p = board.removePiece(target);
+            p.decreaseMovement();
+            if (captured is not null)
+            {
+                board.putPiece(captured, target);
+                this.capturedInGame.Remove(captured);
+
+                }
+            board.putPiece(p, origin);
+            }
+            return captured;
+
+        internal void makePlay(Position origin, Position target)
+        {
+
+            Piece captured = executeMove(origin, target);
+            if (isInCheck(_currentPlayer))
+            {
+                if (isCheckMate(_currentPlayer))
+                {
+                    finished = true;
+        }
+                else {
+                    undoMove(origin, target, captured);
+                    throw new BoardException("You can't put yourself in check");
+                }
+                
+            }
+            if (isInCheck(oponentColor(_currentPlayer)))
+            {
+                Check = true;
+            }
+            else
+            {
+                Check = false;
+            }
+            if (isCheckMate(oponentColor(_currentPlayer)))
+            {
+                finished = true;
+            }
+
+            _turn++;
+            changePlayer();
+
+
+
+        }
+
+        public void validatePositionTarget(Position origin, Position target)
+        {
+            if (!board.getPiece(origin).canMove(target))
+            {
+                throw new BoardException("Invalid position!");
+            }
+        }
+        public void validatePositionOrigin(Position origin)
+        {
+            if (board.getPiece(origin) == null)
+            {
+                throw new BoardException("There isn't a piece in this position!");
+            }
+            if (board.getPiece(origin).Color != _currentPlayer)
+            {
+                throw new BoardException($"It's not {board.getPiece(origin).Color}'s turn!");
+            }
+            if (!board.getPiece(origin).isTherePossibleMovements())
+            {
+                throw new BoardException("Piece's movement is blocked!");
+            }
         }
 
         private Piece king(Color color)
@@ -79,6 +155,7 @@ namespace Console_Chess
         private Color oponentColor(Color color)
         {
             if (color == Color.BLACK)
+            foreach (Piece x in inGamePieces(oponentColor(color)))
             {
                 return Color.WHITE;
             }
@@ -142,28 +219,7 @@ namespace Console_Chess
             Console.WriteLine();
         }
 
-        public void validatePositionTarget(Position origin, Position target)
-        {
-            if (!board.getPiece(origin).canMove(target))
-            {
-                throw new BoardException("Invalid position!");
-            }
-        }
-        public void validatePositionOrigin(Position origin)
-        {
-            if (board.getPiece(origin) == null)
-            {
-                throw new BoardException("There isn't a piece in this position!");
-            }
-            if (board.getPiece(origin).Color != _currentPlayer)
-            {
-                throw new BoardException($"It's not {board.getPiece(origin).Color}'s turn!");
-            }
-            if (!board.getPiece(origin).isTherePossibleMovements())
-            {
-                throw new BoardException("Piece's movement is blocked!");
-            }
-        }
+
         private void changePlayer()
         {
             if (_currentPlayer == Color.WHITE)
@@ -192,9 +248,9 @@ namespace Console_Chess
                 for (int j = 0; j < board.Y; j++)
                 {
                     Position pos = new Position(i, j);
-                    if (board.getPiece(pos) != null)
+                    if (board.getPiece(pos) is not null)
                     {
-                        this.pieces.Add(board.getPiece(pos));
+                        this.piecesInGame.Add(board.getPiece(pos));
                     }
                 }
             }
@@ -202,7 +258,7 @@ namespace Console_Chess
         public HashSet<Piece> capturedPieces(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
-            foreach (var piece in this.captured)
+            foreach (var piece in this.capturedInGame)
             {
                 if (piece.Color == color)
                 {
@@ -214,7 +270,7 @@ namespace Console_Chess
         public HashSet<Piece> inGamePieces(Color color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
-            foreach (var piece in this.pieces)
+            foreach (var piece in this.piecesInGame)
             {
                 if (piece.Color == color)
                 {

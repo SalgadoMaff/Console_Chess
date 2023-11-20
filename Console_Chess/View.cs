@@ -98,10 +98,24 @@ namespace Console_Chess
         {
             Console.Write("Enter a Position (EX = A1): ");
             string s = Console.ReadLine().ToUpper();
-            char ch = s[0];
-            int i = int.Parse(s[1].ToString());
-            return posdict.toPosition(ch, i);
-
+            if (String.IsNullOrEmpty(s))
+            {
+                throw new BoardException("Input should not be empty!");
+            }
+            else if (s.Length > 2 || s.Length==1)
+            {
+                throw new BoardException("Input should have 2 characters!");
+            }
+            else if (!char.IsLetter(s[0]) && !char.IsDigit(s[1]))
+            {
+                throw new BoardException("Input should be: 1 letter and one digit, in that order!");
+            }
+            else
+            {
+                char ch = s[0];
+                int i = int.Parse(s[1].ToString());
+                return posdict.toPosition(ch, i);
+            }
         }
 
         internal static void printBoard(Board board, PosDict posdict)

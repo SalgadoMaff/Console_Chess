@@ -32,8 +32,23 @@ namespace Console_Chess
 
         public Position toPosition(char column, int row)
         {
-            int Column = ColumnDict.FirstOrDefault(x => x.Value == column).Key;
-            int Row = RowDict.FirstOrDefault(x => x.Value == row).Key;
+            int Column, Row;
+            if (column == 'A' || column == 'B' || column == 'C' || column == 'D' || column == 'E' || column == 'F' || column == 'G' || column == 'H')
+            {
+                Column = ColumnDict.FirstOrDefault(x => x.Value == column).Key;
+            }
+            else
+            {
+                throw new BoardException("Invalid input for column!");
+            }
+            if (row >0 && row<9) {
+                Row = RowDict.FirstOrDefault(x => x.Value == row).Key;
+            }
+            else
+            {
+                throw new BoardException("Invalid input for row!");
+            }
+            
 
             return new Position(Row, Column);
         }

@@ -1,33 +1,32 @@
 ﻿using Console_Chess;
 using System.Net.NetworkInformation;
 
-
+PosDict posdict = new PosDict();
+Match Chess_match = new Match(Color.WHITE, populateBoard(posdict));
+Chess_match.populateHash(Chess_match.board);
 try
 {
 
-    PosDict posdict = new PosDict();
-    Board board = populateBoard(posdict);
-    Match Chess_match = new Match(Color.WHITE, board);
-    Chess_match.populateHash(board);
+
     while (!Chess_match.finished)
     {
         try
         {
-            Chess_match.printMatch(board,posdict);
-            
+            Chess_match.printMatch(Chess_match.board, posdict);
+
             Console.WriteLine("Origin:");
             Position origin = View.readChessPosition(posdict);
             Chess_match.validatePositionOrigin(origin);
             Console.Clear();
 
             bool[,] possiblePositions = Chess_match.board.getPiece(origin).possibleMovements();
-            View.printBoard(board, posdict, possiblePositions);
+            View.printBoard(Chess_match.board, posdict, possiblePositions);
             Console.WriteLine();
-            
+
             Console.WriteLine("Target:");
             Position target = View.readChessPosition(posdict);
             Chess_match.validatePositionTarget(origin, target);
-            Chess_match.doMove(origin, target);
+            Chess_match.makePlay(origin, target);
         }
         catch (BoardException e)
         {
@@ -35,7 +34,7 @@ try
             Console.WriteLine(e.Message);
             Console.ReadLine();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
             Console.ReadLine();
@@ -43,6 +42,7 @@ try
 
 
     }
+    Chess_match.printMatch(Chess_match.board, posdict);
 
 }
 catch (BoardException e)
